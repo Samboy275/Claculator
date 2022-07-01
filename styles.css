@@ -1,0 +1,41 @@
+body{
+    flex-direction: column;
+    display: flex;
+    gap: 30px;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+.display{
+    height: 50px;
+    width: 200px;
+    background-color: darkcyan;
+}
+.header{
+    margin-bottom: auto;
+    background-color: cadetblue;
+    height: 72px;
+    margin: 0;
+    padding: 0px 16px;
+}
+
+.content{
+    margin: 200px 0px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+button{
+    width: 50px;
+    height: 50px;
+    text-align: center;
+}
+
+.footer{
+    height: 72px;
+    background-color: aqua;
+    margin-top: auto;
+}
