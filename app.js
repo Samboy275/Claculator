@@ -4,9 +4,10 @@ const buttonsPlace = document.getElementById('buttons');
 const symbols = ['clear','0', '=','+', '/', 'x', '-'];
 
 // variable to store result
-
-var result = 0;
-
+let result = 0;
+let operation = '';
+let num1 = 0;
+let num2 = 0;
 function drawButtons()
 {
     let symbolsDrawn = 0;
@@ -17,7 +18,7 @@ function drawButtons()
         for (let j = 1; j <= 4; j++)
         {
             const button = document.createElement('button');
-            button.addEventListener('click', (e) => ShowOnDisplay(e.target));
+            button.addEventListener('click', (e) => ButtonPressed(e.target));
             // if column is the last column then add the last three symbols
             if (j < 4)
             {
@@ -41,7 +42,7 @@ function drawButtons()
             for (let s = 0; s < symbols.length - symbolsDrawn; s++)
             {
                 const button = document.createElement('button');
-                button.addEventListener('click', (e) => ShowOnDisplay(e.target));
+                button.addEventListener('click', (e) => ButtonPressed(e.target));
                 button.id = symbols[s];
                 button.textContent = button.id;
                 lastRow.appendChild(button);
@@ -59,67 +60,91 @@ drawButtons();
 
 
 // function to add pressed button to display
-function ShowOnDisplay(button)
+function ButtonPressed(button)
 {
-    if (isNaN(result))
+    debugger;
+    if (button.id === 'clear')
     {
+        display.textContent = '';
+        num1 = 0;
         result = 0;
+        num2 = 0;
+        operation = 0;
     }
-    if (symbols.includes(button.id) && button.id !== '0')
+    else if (isNaN(button.id))
     {
-        switch(button.id)
+        let displayText = '';
+        if (button.id === '=' || operation !== '')
         {
-            case 'clear':
-                display.textContent = '';
-                break;
-            case '=':
-                let sequence = display.textContent.split(' ');
-                let operation = '';
-                for (let i = 0; i < sequence.length; i++)
-                {
-                    if (isNaN(sequence[i]))
-                    {
-                        operation = sequence[i];
-                    }
-                    else
-                    {
-                        console.log(sequence[i]);
-                        console.log(result);
-                        let number = 0;
-                        if (sequence[i] !== undefined)
-                            number = parseFloat(sequence[i]);
-                        else
-                            number = 0;
-                        switch(operation)
-                        {
-                            case '+':
-                                result += number;
-                                break;
-                            case '-':
-                                result -= number;
-                                break;
-                            case '/':
-                                result /= number;
-                                break;
-                            case 'x':
-                                result *= number;
-                                break;
-                            default:
-                                result = number;
-                                break;
-                        }
-                    }
-                    display.textContent = '';
-                    display.textContent = result;
-                }
-                break;
-            default:
-                display.textContent += ` ${button.id} `;
-                break;
+            console.log('inside the if');
+            console.log(result);
+            num1 = parseFloat(display.textContent);
+            result = operate(operation, result, num1);
+            console.log(result);
+            if (button.id === '=')
+            {
+                displayText = `${result}`;
+            }
         }
+        else
+        {
+            result = parseFloat(display.textContent);
+            console.log('outside the iff');
+            console.log(result);
+            operation = button.id;
+        }
+        display.textContent = displayText;
     }
-    else
+    else 
     {
         display.textContent += button.id;
     }
+}
+
+
+// operation functions
+function operate(operation, num1, num2)
+{
+    let returnValue = 0;
+    switch(operation)
+    {
+        case '+':
+            returnValue = add(num1, num2);
+            break;
+         case '-':
+            returnValue = subtract(num1, num2);
+            break;
+        case '/':
+            returnValue = divide(num1, num2);
+            break;
+        case 'x':
+            returnValue = multiply(num1, num2);
+            break;
+    }
+    return returnValue;
+}
+function add(a, b)
+{
+    return a + b;
+}
+
+function subtract(a, b)
+{
+    return a - b;
+}
+
+function multiply(a, b)
+{
+    return a * b;
+}
+
+
+function divide(a, b)
+{
+    if (b === 0)
+    {
+        return '0 division Error';
+    }
+
+    return a / b;
 }

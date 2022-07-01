@@ -41,3 +41,9 @@ button{
     background-color: aqua;
     margin-top: auto;
 }
+
+
+.toggle{
+    color: black;
+    background-color: white;
+}
