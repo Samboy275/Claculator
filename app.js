@@ -2,12 +2,12 @@ const display = document.getElementById('display');
 const buttonsPlace = document.getElementById('buttons');
 
 const symbols = ['clear','0', '=','+', '/', 'x', '-'];
-
+let sequence = '';
 // variable to store result
-let result = 0;
+let result = NaN;
 let operation = '';
-let num1 = 0;
-let num2 = 0;
+let num1 = NaN;
+let num2 = NaN;
 function drawButtons()
 {
     let symbolsDrawn = 0;
@@ -62,38 +62,41 @@ drawButtons();
 // function to add pressed button to display
 function ButtonPressed(button)
 {
-    debugger;
     if (button.id === 'clear')
     {
         display.textContent = '';
-        num1 = 0;
-        result = 0;
-        num2 = 0;
-        operation = 0;
+        num1 = NaN;
+        result = NaN;
+        num2 = NaN;
+        operation = '';
     }
     else if (isNaN(button.id))
     {
-        let displayText = '';
-        if (button.id === '=' || operation !== '')
+        if (isNaN(result))
         {
-            console.log('inside the if');
-            console.log(result);
-            num1 = parseFloat(display.textContent);
-            result = operate(operation, result, num1);
-            console.log(result);
-            if (button.id === '=')
-            {
-                displayText = `${result}`;
-            }
+            result = parseFloat(display.textContent);
         }
         else
         {
-            result = parseFloat(display.textContent);
-            console.log('outside the iff');
-            console.log(result);
+            num1 = parseFloat(display.textContent);
+        }
+        display.textContent = '';
+        if (!isNaN(num1) && operation !== '')
+            {
+                console.log('why is this evaluating');
+                result = operate(operation, result, num1);
+                num1 = NaN;
+                operation = '';
+            }
+
+        if (button.id === '=')
+        {
+            display.textContent = result;
+        }
+        else
+        {
             operation = button.id;
         }
-        display.textContent = displayText;
     }
     else 
     {
@@ -105,6 +108,7 @@ function ButtonPressed(button)
 // operation functions
 function operate(operation, num1, num2)
 {
+    console.log(`${num1} ${operation} ${num2}`);
     let returnValue = 0;
     switch(operation)
     {
