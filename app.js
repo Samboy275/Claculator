@@ -43,6 +43,7 @@ function drawButtons()
             else
             {
                 symbolsDrawn++;
+                button.classList.add('operation');
                 button.id = symbols[symbols.length - 1 - i];
                 button.textContent = button.id;
             }
@@ -58,6 +59,17 @@ function drawButtons()
             {
                 const button = document.createElement('button');
                 button.addEventListener('click', (e) => ButtonPressed(e.target));
+                if (symbols[s] !== '0')
+                {
+                    if (symbols[s] === 'clear')
+                    {
+                        button.classList.add('instruction');
+                    }
+                    else
+                    {
+                        button.classList.add('operation');
+                    }
+                }
                 button.id = symbols[s];
                 button.textContent = button.id;
                 lastRow.appendChild(button);
