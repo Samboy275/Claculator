@@ -173,6 +173,7 @@ function ButtonPressed(button)
         }
         else
         {
+            console.log(button.id);
             button.classList.add('toggle');
             operation = button.id;
         }
@@ -208,6 +209,10 @@ function operate(operation, num1, num2)
         case 'x':
             returnValue = multiply(num1, num2);
             break;
+        case '%':
+            returnValue = module(num1, num2);
+        case '^':
+            returnValue = power(num1, num2);
     }
     return returnValue;
 }
@@ -235,4 +240,15 @@ function divide(a, b)
     }
 
     return a / b;
+}
+
+
+function power(a, b)
+{
+    return Math.pow(a, b);
+}
+
+function module(a, b)
+{
+    return a % b;
 }
