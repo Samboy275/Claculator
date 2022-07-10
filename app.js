@@ -211,8 +211,10 @@ function operate(operation, num1, num2)
             break;
         case '%':
             returnValue = module(num1, num2);
+            break;
         case '^':
             returnValue = power(num1, num2);
+            break;
     }
     return returnValue;
 }
@@ -250,5 +252,6 @@ function power(a, b)
 
 function module(a, b)
 {
+    console.log(a % b);
     return a % b;
 }
