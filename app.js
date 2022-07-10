@@ -90,7 +90,8 @@ function drawButtons()
                     }
                     else
                     {
-                        button.classList.add('operation');
+                        if (symbols[s] !== '.')
+                            button.classList.add('operation');
                     }
                 }
                 button.id = symbols[s];
