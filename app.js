@@ -12,7 +12,7 @@
 const display = document.getElementById('display');
 const buttonsPlace = document.getElementById('buttons');
 
-const symbols = ['clear','0', '=','+', '/', 'x', '-'];
+const symbols = ['clear','%','^','<','.','0', '=','+', '/', 'x', '-'];
 let sequence = '';
 
 // variable to store result
@@ -20,16 +20,39 @@ let newOp = false;
 let result = NaN;
 let operation = '';
 let num1 = NaN;
-let savedRes = NaN;
 
 
 function drawButtons()
 {
     let symbolsDrawn = 0;
+    let symbolIndex = 0;
     // loop through to make the buttons in a square grid
-    for (let i  = 2; i >= 0; i--)
+    for (let i  = 3; i >= 0; i--)
     {
         const rowDiv = document.createElement('div');
+
+        if (i === 3)
+        {
+            for (let j = 0; j < 4; j++)
+            {
+                const button = document.createElement('button');
+                button.addEventListener('click', (e) => ButtonPressed(e.target));
+                button.id = symbols[j];
+                button.textContent = symbols[j];
+                if (symbols[j] === 'clear' || symbols[j] === '<')
+                {
+                    button.classList.add('instruction');
+                }
+                else
+                {
+                    button.classList.add('operation');
+                }
+                symbolIndex++;
+                rowDiv.appendChild(button);
+            }
+            buttonsPlace.appendChild(rowDiv);
+            continue;
+        }
         for (let j = 1; j <= 4; j++)
         {
             const button = document.createElement('button');
@@ -55,7 +78,7 @@ function drawButtons()
         if (i === 0)
         {
             const lastRow = document.createElement('div');
-            for (let s = 0; s < symbols.length - symbolsDrawn; s++)
+            for (let s = symbolIndex; s < symbols.length - symbolsDrawn; s++)
             {
                 const button = document.createElement('button');
                 button.addEventListener('click', (e) => ButtonPressed(e.target));
@@ -105,6 +128,21 @@ function ButtonPressed(button)
     {
         clear();
     }
+    else if (button.id == '<')
+    {
+        if (display.textContent !== '')
+        {
+            display.textContent = display.textContent.slice(0, -1);
+        }
+    }
+    else if (button.id === '.')
+    {
+        if (display.textContent.includes('.'))
+        {
+            return;
+        }
+        display.textContent += button.id;
+    }
     else if (isNaN(button.id))
     {
         
@@ -130,7 +168,6 @@ function ButtonPressed(button)
         if (button.id === '=')
         {
             display.textContent = isNaN(result) ? '' : result;
-            savedRes = result;
             clear(false);
             newOp = true;
         }
