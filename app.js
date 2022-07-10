@@ -1,13 +1,28 @@
+/* -------------Calculator By Samual Mohamed------------- 
+    Code of a symbol calculator to made using js and html with some css styles
+            this code is part of the projects in The Odin Project
+            
+    TODOS
+    Add a res symbol to save previous result
+    add a way for a user to correct the number if entered wrong
+    add % operator               
+            
+*/
+
 const display = document.getElementById('display');
 const buttonsPlace = document.getElementById('buttons');
 
 const symbols = ['clear','0', '=','+', '/', 'x', '-'];
 let sequence = '';
+
 // variable to store result
+let newOp = false;
 let result = NaN;
 let operation = '';
 let num1 = NaN;
-let num2 = NaN;
+let savedRes = NaN;
+
+
 function drawButtons()
 {
     let symbolsDrawn = 0;
@@ -57,24 +72,35 @@ function drawButtons()
 
 drawButtons();
 
-
+// function to clear data
+function clear(clearDisplay = true)
+{
+    const toggledButtons = document.querySelectorAll('.toggle');
+    toggledButtons.forEach( element => element.classList.remove('toggle'));
+    result = NaN;
+    num1 = NaN;
+    operation = '';
+    if (clearDisplay)
+    {
+        display.textContent = '';
+    }
+}
 
 // function to add pressed button to display
 function ButtonPressed(button)
 {
     if (button.id === 'clear')
     {
-        display.textContent = '';
-        num1 = NaN;
-        result = NaN;
-        num2 = NaN;
-        operation = '';
+        clear();
     }
     else if (isNaN(button.id))
     {
+        
         if (isNaN(result))
         {
             result = parseFloat(display.textContent);
+            if (operation === '-')
+                result = -result;
         }
         else
         {
@@ -82,24 +108,33 @@ function ButtonPressed(button)
         }
         display.textContent = '';
         if (!isNaN(num1) && operation !== '')
-            {
-                console.log('why is this evaluating');
-                result = operate(operation, result, num1);
-                num1 = NaN;
-                operation = '';
-            }
+        {
+            //console.log('why is this evaluating');
+            result = operate(operation, result, num1);
+            num1 = NaN;
+            operation = '';
+        }
 
         if (button.id === '=')
         {
-            display.textContent = result;
+            display.textContent = isNaN(result) ? '' : result;
+            savedRes = result;
+            clear(false);
+            newOp = true;
         }
         else
         {
+            button.classList.add('toggle');
             operation = button.id;
         }
     }
     else 
     {
+        if (newOp)
+        {
+            display.textContent = '';
+            newOp = false;
+        }
         display.textContent += button.id;
     }
 }
